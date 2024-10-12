@@ -1,8 +1,6 @@
 package example_1;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Task {
     String taskName;

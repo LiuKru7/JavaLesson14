@@ -13,9 +13,4 @@ public class TodoMain {
 ////        todoApp.viewCompletedTasks();
         todoApp.menu();
         }
-
-
-
-
-
 }
