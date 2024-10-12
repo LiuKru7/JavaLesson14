@@ -11,7 +11,7 @@ public class TodoMain {
 ////        todoApp.viewPendingTasks();
 ////        todoApp.viewAllTasks();
 ////        todoApp.viewCompletedTasks();
-        todoApp.local();
+        todoApp.menu();
         }
 
 

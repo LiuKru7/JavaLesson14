@@ -1,6 +1,7 @@
 package example_1;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class TodoApp {
@@ -120,11 +121,68 @@ public class TodoApp {
         }
         return count;
     }
-    public void local() {
-        System.out.println(LocalDateTime.now());
 
+    public void metodas () {
+        String firstTask = "";
+        double number = 0;
 
+        for (int i = 0; i < tasks.length ; i++) {
+            if (tasks[i] != null) {
+                double newNumber = dateFormat(tasks[i].dateCompleted);
+                if (number == 0) {
+                    number = newNumber;
+                    firstTask = tasks[i].taskName;
+                }
+
+                if (number < newNumber) {
+                    number = newNumber;
+                    firstTask = tasks[i].taskName;
+                }
+            }
+        }
+        System.out.println("First task name  : " + firstTask );
     }
 
+    public void menu () {
+        boolean isOn = true;
 
+
+        while (isOn) {
+            System.out.println("Please choose an option:");
+            System.out.println("1. Add a new task.");
+            System.out.println("2. Remove a task.");
+            System.out.println("3. Mark a task as completed.");
+            System.out.println("4. View all tasks.");
+            System.out.println("5. View completed tasks.");
+            System.out.println("6. View pending tasks.");
+            System.out.println("7. Show total number of tasks.");
+            System.out.println("8. Show total number of completed tasks.");
+            System.out.println("9. Perform a custom action.");
+            System.out.println("0. Exit the program.");
+
+
+            String value = scanner.nextLine();
+
+
+            switch (value){
+                case "1" -> addTask();
+                case "2" -> removeTask();
+                case "3" -> markTaskAsCompleted();
+                case "4" -> viewAllTasks();
+                case "5" -> viewCompletedTasks();
+                case "6" -> viewPendingTasks();
+                case "7" -> System.out.println("Tasks: " + getTaskCount());
+                case "8" -> System.out.println("Completed tasks :" + getCompletedTaskCount());
+                case "9" -> metodas();
+                case "0" -> isOn = false;
+            }
+        }
+    }
+    public double dateFormat (LocalDateTime date) {
+        LocalDateTime currentDateTime = date;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        double formattedDateTime = Double.parseDouble(currentDateTime.format(formatter));
+        return formattedDateTime;
+    }
+}
 }

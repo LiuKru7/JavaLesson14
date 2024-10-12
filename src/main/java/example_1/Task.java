@@ -1,35 +1,37 @@
 package example_1;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Task {
-    String taskName ;
+    String taskName;
     String description;
     int priority;
     boolean isCompleted;
-    String asignee;
+    String assignee;
     LocalDateTime dateCreated;
     LocalDateTime dateCompleted;
+
 
     public Task(String taskName, String description, int priority, String asignee) {
         this.taskName = taskName;
         this.description = description;
         this.priority = priority;
         this.isCompleted = false;
-        this.asignee = asignee;
+        this.assignee = asignee;
         dateCreated = LocalDateTime.now();
-
     }
 
     public void markCompleted() {
         dateCompleted = LocalDateTime.now();
         isCompleted = true;
     }
-    public String getPriorityAssString(){
-        if (priority==1) {
+
+    public String getPriorityAssString() {
+        if (priority == 1) {
             return "High";
-        } else if (priority ==2) {
+        } else if (priority == 2) {
             return "Medium";
         } else if (priority == 3) {
             return "Low";
@@ -38,13 +40,9 @@ public class Task {
             return "";
         }
     }
-    public double dateFormat (LocalDateTime date) {
-                LocalDateTime currentDateTime = date;
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-                double formattedDateTime = Integer.parseInt(currentDateTime.format(formatter));
-                return formattedDateTime;
-        }
-    }
+}
+
+
 
 
 
