@@ -1,8 +1,8 @@
 package NewLibrary;
 
 public class Book {
-    private String title;
-    private String author;
+    private final String title;
+    private final String author;
     private boolean isAvailable;
     private final int bookId ;
 
@@ -21,16 +21,8 @@ public class Book {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public boolean isAvailable() {
@@ -40,14 +32,5 @@ public class Book {
     public void setAvailable(boolean available) {
         isAvailable = available;
     }
-
-
-    public boolean barrow() {
-        return isAvailable=false;
-    }
-    public boolean returnBook() {
-        return isAvailable=true;
-    }
-
 
 }
