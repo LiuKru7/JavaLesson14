@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class TodoApp {
+    public static final String COMPLETED = "completed";
+    public static final String NOT_COMPLETED = "not completed";
     Task[] tasks;
     Scanner scanner = new Scanner(System.in);
 
@@ -40,6 +42,7 @@ public class TodoApp {
             scanner.nextLine();
             if (taskPriority < 1 || taskPriority > 3) {
                 System.out.println("Invalid priority");
+                System.out.println("Try again");
             } else {
                 System.out.println("Priority is valid");
                 isPriorityInValid = false;
@@ -74,7 +77,7 @@ public class TodoApp {
         System.out.println("Completed task name: ");
         String taskName = scanner.nextLine();
         for (Task task : tasks) {
-            if (task.taskName.equalsIgnoreCase(taskName)) {
+            if (task != null && task.taskName.equalsIgnoreCase(taskName)) {
                 task.markCompleted();
                 System.out.printf("%s marked completed %n", task.taskName);
                 return;
@@ -86,13 +89,12 @@ public class TodoApp {
     public void viewAllTasks() {
         System.out.println("All tasks: ");
 
-
         int index = 0;
         for (Task task : tasks) {
             if (task != null ) {
                 index++;
                 String priorityTask = task.getPriorityAssString(task.priority);
-                String completed = task.isCompleted ? "completed" : "not completed";
+                String completed = task.isCompleted ? COMPLETED : NOT_COMPLETED;
                 System.out.printf("%d.Name: %s ; Description: %s; Priority %s; %s %n",index, task.taskName, task.description, priorityTask ,completed);
             }
         }
@@ -114,13 +116,17 @@ public class TodoApp {
         System.out.println("Completed tasks:");
         int index = 0;
         for (Task task : tasks) {
-            if (task != null && task.isCompleted) {
+            if (isTaskCompleted(task)) {
                 index++;
                 String priorityTask = task.getPriorityAssString(task.priority);
                 System.out.printf("%d.Name: %s ; Description: %s; Priority %s . %n",
                         index,task.taskName, task.description, priorityTask);
             }
         }
+    }
+
+    private boolean isTaskCompleted(Task task) {
+        return task != null && task.isCompleted;
     }
 
     public int getTaskCount(){
@@ -136,7 +142,7 @@ public class TodoApp {
     public int getCompletedTaskCount(){
         int count = 0;
         for (Task task : tasks) {
-            if (task != null && task.isCompleted) {
+            if (isTaskCompleted(task)) {
                 count++;
             }
         }
@@ -148,15 +154,15 @@ public class TodoApp {
         double number = 0;
 
         for (Task task : tasks) {
-            if (task != null && task.isCompleted) {
-                double newNumber = dateFormat(task.dateCompleted);
+            if (isTaskCompleted(task)) {
+                double dateToNumber = dateFormat(task.dateCompleted);
                 if (number == 0) {
-                    number = newNumber;
+                    number = dateToNumber;
                     firstTask = task.taskName;
                 }
 
-                if (number > newNumber) {
-                    number = newNumber;
+                if (number > dateToNumber) {
+                    number = dateToNumber;
                     firstTask = task.taskName;
                 }
             }
@@ -176,7 +182,7 @@ public class TodoApp {
         String  assignee = scanner.nextLine();
 
         for (Task task : tasks) {
-            if (task.taskName.equalsIgnoreCase(taskName)) {
+            if (task!= null && task.taskName.equalsIgnoreCase(taskName)) {
                 task.assignee = assignee;
                 return;
             }
@@ -186,24 +192,8 @@ public class TodoApp {
 
     public void menu () {
         boolean isOn = true;
-
-
         while (isOn) {
-            System.out.println("************************");
-            System.out.println("Please choose an option:");
-            System.out.println("************************");
-            System.out.println("1. Add a new task.");
-            System.out.println("2. Remove a task.");
-            System.out.println("3. Mark a task as completed.");
-            System.out.println("4. View all tasks.");
-            System.out.println("5. View completed tasks.");
-            System.out.println("6. View pending tasks.");
-            System.out.println("7. Show total number of tasks.");
-            System.out.println("8. Show total number of completed tasks.");
-            System.out.println("9. Show first task completed.");
-            System.out.println("10. Change assignee");
-            System.out.println("0. Exit the program.");
-
+            printMenu();
             String value = scanner.nextLine();
 
             switch (value){
@@ -221,6 +211,23 @@ public class TodoApp {
                 default -> System.out.println("Invalid value");
             }
         }
+    }
+
+    private void printMenu() {
+        System.out.println("************************");
+        System.out.println("Please choose an option:");
+        System.out.println("************************");
+        System.out.println("1. Add a new task.");
+        System.out.println("2. Remove a task.");
+        System.out.println("3. Mark a task as completed.");
+        System.out.println("4. View all tasks.");
+        System.out.println("5. View completed tasks.");
+        System.out.println("6. View pending tasks.");
+        System.out.println("7. Show total number of tasks.");
+        System.out.println("8. Show total number of completed tasks.");
+        System.out.println("9. Show first task completed.");
+        System.out.println("10. Change assignee");
+        System.out.println("0. Exit the program.");
     }
 
     public double dateFormat (LocalDateTime date) {
