@@ -12,17 +12,26 @@ public class TodoApp {
         tasks = new Task[20];
     }
 
-    public void addTask() {
+    public  void addTaskAuto(Task task) {
+        for (int i = 0; i < tasks.length; i++) {
+            if (tasks[i] == null) {
+                tasks[i] = task;
+                System.out.println("Task added: " + task.taskName + ".");
+                return;
+            }
+        }
+        System.out.println("No empty slots in array");
+    }
 
+    public void addTask() {
+        System.out.println("ADD NEW TASK");
         System.out.println("Add task name: ");
         String taskName = scanner.nextLine();
         System.out.println("Add task description: ");
         String taskDescription = scanner.nextLine();
         System.out.println("Add task assignee: ");
         String assignee = scanner.nextLine();
-
         System.out.println("Add a priority (High - 1, Medium - 2, Low - 3 )");
-
 
         int taskPriority = -1;
         boolean isPriorityInValid = true;
@@ -58,7 +67,7 @@ public class TodoApp {
                 return;
             }
         }
-        System.out.println("Invalid task");
+        System.out.println("Invalid task name.");
     }
 
     public void markTaskAsCompleted() {
@@ -75,30 +84,41 @@ public class TodoApp {
     }
 
     public void viewAllTasks() {
-        System.out.println("Tasks (Tasks priority 1 - high; 2 - medium; 3 - low):");
+        System.out.println("All tasks: ");
+
+
+        int index = 0;
         for (Task task : tasks) {
             if (task != null ) {
-                System.out.printf("Task name: %s ; task description: %s; task priority %d; is completed %b. %n", task.taskName, task.description, task.priority,task.isCompleted);
+                index++;
+                String priorityTask = task.getPriorityAssString(task.priority);
+                String completed = task.isCompleted ? "completed" : "not completed";
+                System.out.printf("%d.Name: %s ; Description: %s; Priority %s; %s %n",index, task.taskName, task.description, priorityTask ,completed);
             }
         }
     }
 
-
     public void viewPendingTasks() {
-        System.out.println("Tasks (Tasks priority 1 - high; 2 - medium; 3 - low):");
+        System.out.println("Pending tasks: ");
+        int index = 0;
         for (Task task : tasks) {
             if (task != null && !task.isCompleted) {
-                System.out.printf("Task name: %s ; task description: %s; task priority %d . %n", task.taskName, task.description, task.priority);
+                index++;
+                String priorityTask = task.getPriorityAssString(task.priority);
+                System.out.printf("%d. Name: %s ; Description: %s; Priority %s . %n",index, task.taskName, task.description, priorityTask);
             }
         }
     }
 
     public void viewCompletedTasks() {
-        System.out.println("Tasks (Tasks priority 1 - high; 2 - medium; 3 - low):");
+        System.out.println("Completed tasks:");
+        int index = 0;
         for (Task task : tasks) {
             if (task != null && task.isCompleted) {
-                System.out.printf("Task name: %s ; task description: %s; task priority %d . %n",
-                        task.taskName, task.description, task.priority);
+                index++;
+                String priorityTask = task.getPriorityAssString(task.priority);
+                System.out.printf("%d.Name: %s ; Description: %s; Priority %s . %n",
+                        index,task.taskName, task.description, priorityTask);
             }
         }
     }
@@ -112,6 +132,7 @@ public class TodoApp {
         }
         return count;
     }
+
     public int getCompletedTaskCount(){
         int count = 0;
         for (Task task : tasks) {
@@ -122,25 +143,45 @@ public class TodoApp {
         return count;
     }
 
-    public void metodas () {
+    public void firstCompletedTask () {
         String firstTask = "";
         double number = 0;
 
-        for (int i = 0; i < tasks.length ; i++) {
-            if (tasks[i] != null) {
-                double newNumber = dateFormat(tasks[i].dateCompleted);
+        for (Task task : tasks) {
+            if (task != null && task.isCompleted) {
+                double newNumber = dateFormat(task.dateCompleted);
                 if (number == 0) {
                     number = newNumber;
-                    firstTask = tasks[i].taskName;
+                    firstTask = task.taskName;
                 }
 
-                if (number < newNumber) {
+                if (number > newNumber) {
                     number = newNumber;
-                    firstTask = tasks[i].taskName;
+                    firstTask = task.taskName;
                 }
             }
         }
-        System.out.println("First task name  : " + firstTask );
+        if (firstTask.equalsIgnoreCase("")) {
+            System.out.println("No task is completed");
+            return;
+        }
+        System.out.println("First task completed  : " + firstTask );
+    }
+
+    public void changeAssignee () {
+        System.out.println("Change task assignee:");
+        System.out.println("Add task name: ");
+        String taskName = scanner.nextLine();
+        System.out.println("Enter the new assignee name: ");
+        String  assignee = scanner.nextLine();
+
+        for (Task task : tasks) {
+            if (task.taskName.equalsIgnoreCase(taskName)) {
+                task.assignee = assignee;
+                return;
+            }
+        }
+
     }
 
     public void menu () {
@@ -148,7 +189,9 @@ public class TodoApp {
 
 
         while (isOn) {
+            System.out.println("************************");
             System.out.println("Please choose an option:");
+            System.out.println("************************");
             System.out.println("1. Add a new task.");
             System.out.println("2. Remove a task.");
             System.out.println("3. Mark a task as completed.");
@@ -157,12 +200,11 @@ public class TodoApp {
             System.out.println("6. View pending tasks.");
             System.out.println("7. Show total number of tasks.");
             System.out.println("8. Show total number of completed tasks.");
-            System.out.println("9. Perform a custom action.");
+            System.out.println("9. Show first task completed.");
+            System.out.println("10. Change assignee");
             System.out.println("0. Exit the program.");
 
-
             String value = scanner.nextLine();
-
 
             switch (value){
                 case "1" -> addTask();
@@ -171,13 +213,16 @@ public class TodoApp {
                 case "4" -> viewAllTasks();
                 case "5" -> viewCompletedTasks();
                 case "6" -> viewPendingTasks();
-                case "7" -> System.out.println("Tasks: " + getTaskCount());
-                case "8" -> System.out.println("Completed tasks :" + getCompletedTaskCount());
-                case "9" -> metodas();
+                case "7" -> System.out.println("Tasks count: " + getTaskCount());
+                case "8" -> System.out.println("Completed tasks count :" + getCompletedTaskCount());
+                case "9" -> firstCompletedTask();
+                case "10" -> changeAssignee();
                 case "0" -> isOn = false;
+                default -> System.out.println("Invalid value");
             }
         }
     }
+
     public double dateFormat (LocalDateTime date) {
         LocalDateTime currentDateTime = date;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");

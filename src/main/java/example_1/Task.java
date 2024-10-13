@@ -26,7 +26,7 @@ public class Task {
         isCompleted = true;
     }
 
-    public String getPriorityAssString() {
+    public String getPriorityAssString(int priority) {
         if (priority == 1) {
             return "High";
         } else if (priority == 2) {
