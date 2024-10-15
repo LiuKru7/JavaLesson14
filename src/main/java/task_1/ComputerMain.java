@@ -8,16 +8,12 @@ public class ComputerMain {
         lenovo.setRamSize(8);
         lenovo.setStorageCapacity(125);
 
-        Computer asus = new Computer
-                ("Asus", "Linux", 8, 256, 3.2, true  );
+        Computer asus = new Computer("Asus", "Linux", 8, 256, 3.2, true  );
         Computer macBook = new Computer(8, 256, 2.456, true,"MacBook air m1");
         macBook.setOperatingSystem("Mac Os");
 
-        System.out.println(asus.toString());
-        System.out.println(lenovo.toString());
-        System.out.println(macBook.toString());
-
+        System.out.println(asus);
+        System.out.println(lenovo);
+        System.out.println(macBook);
     }
-
-
 }
