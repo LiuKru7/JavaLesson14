@@ -9,5 +9,4 @@ public class Vehicle {
     public void stop() {
         System.out.println("Vehicle has stopped.");
     }
-
 }

@@ -9,7 +9,6 @@ public class Main {
         car.brand = "Audi";
         car.speed = 60;
 
-
         car.move();
         car.stop();
         boat.move();

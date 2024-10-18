@@ -135,15 +135,17 @@ public class Library {
 
     public String askUserName() {
         String userName = "";
-        while (true) {
+        boolean isNameNotCorrect = true;
+        while (isNameNotCorrect) {
             System.out.print("Enter your username: ");
             userName = scanner.nextLine();
             for (User user : users) {
                 if (user.getName().equalsIgnoreCase(userName)) {
-                    return userName;
+                    isNameNotCorrect = false;
                 }
             }
         }
+        return userName;
     }
 
     public void printAllUsers() {
@@ -157,7 +159,9 @@ public class Library {
         for (User user : users) {
             if (user.getName().equalsIgnoreCase(username)) {
                 for (int j = 0; j < user.books.length; j++) {
-                    System.out.printf("ID: %d. Tittle: %s : Author: %s . %n", user.books[j].getBookId(), user.books[j].getAuthor(), user.books[j].getTitle());
+                    if (user.books[j] != null){
+                        System.out.printf("ID: %d. Tittle: %s : Author: %s . %n", user.books[j].getBookId(), user.books[j].getAuthor(), user.books[j].getTitle());
+                    }
                 }
             }
         }
